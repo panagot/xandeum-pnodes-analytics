@@ -2,7 +2,7 @@
 
 import { PNode } from '@/lib/prpc';
 import { Search, X, Zap, TrendingUp, AlertCircle } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface SmartSearchProps {
   nodes: PNode[];
@@ -83,11 +83,11 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
     inputRef.current?.focus();
   }, []);
 
-  const handleSelect = (node: PNode) => {
+  const handleSelect = useCallback((node: PNode) => {
     onSelect(node);
     setQuery('');
     onClose?.();
-  };
+  }, [onSelect, onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
