@@ -7,6 +7,13 @@
 
 A modern, web-based analytics platform for Xandeum Provider Nodes (pNodes), providing real-time insights into the Xandeum storage network.
 
+## What’s new in the redesign (Dec 2025)
+- 🌐 **Enterprise layout**: New sidebar/topbar shell with dense, readable cards and tables (no more “React default” look).
+- 🎨 **Accessible visuals**: Calmer palette, consistent typography, and card-based sections for analytics, comparisons, and AI insights.
+- 📊 **Readable analytics**: Activity Timeline, Heatmap, Flow Diagram, Leaderboard, and AI Analyst all restyled for clarity with on-card text.
+- 🔄 **Compare UX**: Multi-select compare flow with clear status pills and metric values.
+- 🧭 **Geographic distribution**: Count/Storage/Latency tabs now fully legible with modern cards.
+
 ## Features
 
 ### Core Functionality
@@ -25,7 +32,7 @@ A modern, web-based analytics platform for Xandeum Provider Nodes (pNodes), prov
 - 📉 **Sparklines**: Quick trend visualization in all stat cards
 
 ### User Experience
-- 🎨 **Modern UI**: Glassmorphism design with animated gradients
+- 🎨 **Modern UI**: Professional, enterprise-grade card layout with sidebar/topbar navigation and accessible contrast
 - 🔎 **Advanced Search & Filter**: Multi-criteria filtering (status, uptime, latency, storage, location)
 - 📈 **Multiple View Modes**: Grid, Table, and Analytics views
 - 🎯 **Detailed Node Modal**: Comprehensive node information with trends
