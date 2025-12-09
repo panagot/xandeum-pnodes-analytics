@@ -57,10 +57,13 @@ export default function DateRangePicker({ onRangeChange, currentRange = '24h' }:
             {ranges.map((range) => (
               <button
                 key={range.value}
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   onRangeChange(range.value);
                   setIsOpen(false);
                 }}
+                type="button"
                 className={`w-full text-left px-4 py-2 text-sm transition-colors ${
                   currentRange === range.value
                     ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-medium'

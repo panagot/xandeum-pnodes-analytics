@@ -62,9 +62,15 @@ export default function FilterModal({ nodes, onFilter, onClose }: FilterModalPro
 
   const activeFilters = Object.values(filters).filter(v => v !== 'all' && v !== '').length;
 
+  const handleClose = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 z-40 flex items-start justify-center pt-20 px-4">
-      <div className="bg-black/50 backdrop-blur-sm fixed inset-0" onClick={onClose} />
+      <div className="bg-black/50 backdrop-blur-sm fixed inset-0" onClick={handleClose} />
       <div 
         className="relative bg-white dark:bg-[#131a26] rounded-lg shadow-xl border border-gray-200 dark:border-[#1e293b] w-full max-w-2xl z-50"
         onClick={(e) => e.stopPropagation()}
@@ -81,7 +87,12 @@ export default function FilterModal({ nodes, onFilter, onClose }: FilterModalPro
             )}
           </div>
           <button
-            onClick={onClose}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onClose();
+            }}
+            type="button"
             className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -180,16 +191,20 @@ export default function FilterModal({ nodes, onFilter, onClose }: FilterModalPro
           </button>
           <div className="flex items-center gap-2">
             <button
-              onClick={onClose}
+              onClick={handleClose}
+              type="button"
               className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1e293b] rounded-lg transition-colors"
             >
               Cancel
             </button>
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 applyFilters();
                 onClose();
               }}
+              type="button"
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
             >
               Apply Filters

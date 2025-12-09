@@ -135,6 +135,10 @@ export default function Home() {
         onRefresh={fetchNodes} 
         onSearch={() => setShowSearch(true)}
         onFilter={() => setShowFilter(true)}
+        onDateRangeChange={(range) => {
+          console.log('Date range changed to:', range);
+          setDateRange(range);
+        }}
         onExport={() => {
           // Trigger export using ExportButton logic
           const exportButton = document.querySelector('[data-export-button]');
