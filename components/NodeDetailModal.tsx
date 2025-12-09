@@ -76,26 +76,26 @@ export default function NodeDetailModal({ node, history, onClose }: NodeDetailMo
       onClick={onClose}
     >
       <div
-        className="glass-strong rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-white/20 relative"
+        className="bg-white dark:bg-[#131a26] rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-[#1e293b] relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 glass-strong border-b border-white/10 p-6 backdrop-blur-xl z-10">
+        <div className="sticky top-0 bg-white dark:bg-[#131a26] border-b border-gray-200 dark:border-[#1e293b] p-6 z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className={`p-3 bg-gradient-to-br ${statusConfig.bg} rounded-xl`}>
                 <Server className={`w-6 h-6 ${statusConfig.text}`} />
               </div>
               <div>
-                <h2 className="text-2xl font-display font-bold gradient-text bg-gradient-to-r from-purple-400 to-pink-400">
+                <h2 className="text-2xl font-display font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
                   {node.id}
                 </h2>
-                <p className="text-sm text-white/60 mt-1 font-mono">{node.address}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 font-mono">{node.address}</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="text-white/60 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-lg"
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors p-2 hover:bg-gray-100 dark:hover:bg-[#1e293b] rounded-lg"
             >
               <X className="w-6 h-6" />
             </button>
@@ -105,11 +105,11 @@ export default function NodeDetailModal({ node, history, onClose }: NodeDetailMo
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Status Badge */}
-          <div className={`glass rounded-xl p-4 border ${statusConfig.border} ${statusConfig.bg}`}>
+          <div className={`bg-gray-50 dark:bg-[#1e293b] rounded-xl p-4 border ${statusConfig.border} ${statusConfig.bg}`}>
             <div className="flex items-center gap-3">
               <StatusIcon className={`w-5 h-5 ${statusConfig.text}`} />
               <div>
-                <p className="text-sm text-white/60">Status</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Status</p>
                 <p className={`font-semibold ${statusConfig.text}`}>{statusConfig.label}</p>
               </div>
             </div>
@@ -117,56 +117,56 @@ export default function NodeDetailModal({ node, history, onClose }: NodeDetailMo
 
           {/* Key Metrics Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="glass rounded-xl p-4 border border-white/10">
+            <div className="bg-gray-50 dark:bg-[#1e293b] rounded-xl p-4 border border-gray-200 dark:border-[#1e293b]">
               <div className="flex items-center gap-2 mb-2">
-                <Activity className="w-4 h-4 text-purple-400" />
-                <span className="text-xs text-white/60 uppercase">Version</span>
+                <Activity className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                <span className="text-xs text-gray-600 dark:text-gray-400 uppercase">Version</span>
               </div>
-              <p className="text-lg font-bold text-white">{node.version || 'N/A'}</p>
+              <p className="text-lg font-bold text-gray-900 dark:text-white">{node.version || 'N/A'}</p>
             </div>
 
-            <div className="glass rounded-xl p-4 border border-white/10">
+            <div className="bg-gray-50 dark:bg-[#1e293b] rounded-xl p-4 border border-gray-200 dark:border-[#1e293b]">
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="w-4 h-4 text-blue-400" />
-                <span className="text-xs text-white/60 uppercase">Uptime</span>
+                <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-xs text-gray-600 dark:text-gray-400 uppercase">Uptime</span>
               </div>
-              <p className="text-lg font-bold text-white">{formatUptime(node.uptime)}</p>
+              <p className="text-lg font-bold text-gray-900 dark:text-white">{formatUptime(node.uptime)}</p>
             </div>
 
-            <div className="glass rounded-xl p-4 border border-white/10">
+            <div className="bg-gray-50 dark:bg-[#1e293b] rounded-xl p-4 border border-gray-200 dark:border-[#1e293b]">
               <div className="flex items-center gap-2 mb-2">
-                <Zap className="w-4 h-4 text-yellow-400" />
-                <span className="text-xs text-white/60 uppercase">Latency</span>
+                <Zap className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                <span className="text-xs text-gray-600 dark:text-gray-400 uppercase">Latency</span>
               </div>
-              <p className="text-lg font-bold text-white">{node.latency ? `${node.latency}ms` : 'N/A'}</p>
+              <p className="text-lg font-bold text-gray-900 dark:text-white">{node.latency ? `${node.latency}ms` : 'N/A'}</p>
             </div>
 
-            <div className="glass rounded-xl p-4 border border-white/10">
+            <div className="bg-gray-50 dark:bg-[#1e293b] rounded-xl p-4 border border-gray-200 dark:border-[#1e293b]">
               <div className="flex items-center gap-2 mb-2">
-                <MapPin className="w-4 h-4 text-green-400" />
-                <span className="text-xs text-white/60 uppercase">Location</span>
+                <MapPin className="w-4 h-4 text-green-600 dark:text-green-400" />
+                <span className="text-xs text-gray-600 dark:text-gray-400 uppercase">Location</span>
               </div>
-              <p className="text-lg font-bold text-white">{node.location || 'Unknown'}</p>
+              <p className="text-lg font-bold text-gray-900 dark:text-white">{node.location || 'Unknown'}</p>
             </div>
           </div>
 
           {/* Storage Details */}
-          <div className="glass rounded-xl p-6 border border-white/10">
+          <div className="bg-gray-50 dark:bg-[#1e293b] rounded-xl p-6 border border-gray-200 dark:border-[#1e293b]">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <HardDrive className="w-5 h-5 text-blue-400" />
-                <h3 className="text-lg font-display font-bold text-white">Storage</h3>
+                <HardDrive className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <h3 className="text-lg font-display font-bold text-gray-900 dark:text-white">Storage</h3>
               </div>
-              <span className="text-sm text-white/60">{storagePercent.toFixed(1)}% used</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">{storagePercent.toFixed(1)}% used</span>
             </div>
             
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-white/60">Used</span>
-                  <span className="text-white font-medium">{formatBytes(node.storageUsed)}</span>
+                  <span className="text-gray-600 dark:text-gray-400">Used</span>
+                  <span className="text-gray-900 dark:text-white font-medium">{formatBytes(node.storageUsed)}</span>
                 </div>
-                <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
+                <div className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full bg-gradient-to-r transition-all duration-500 ${
                       storagePercent > 90 ? 'from-red-500 to-rose-500' :
@@ -180,20 +180,20 @@ export default function NodeDetailModal({ node, history, onClose }: NodeDetailMo
               
               <div className="grid grid-cols-2 gap-4 pt-2">
                 <div>
-                  <p className="text-xs text-white/60 mb-1">Total Capacity</p>
-                  <p className="text-lg font-bold text-white">{formatBytes(node.storageCapacity)}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Total Capacity</p>
+                  <p className="text-lg font-bold text-gray-900 dark:text-white">{formatBytes(node.storageCapacity)}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/60 mb-1">Available</p>
-                  <p className="text-lg font-bold text-white">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Available</p>
+                  <p className="text-lg font-bold text-gray-900 dark:text-white">
                     {formatBytes((node.storageCapacity || 0) - (node.storageUsed || 0))}
                   </p>
                 </div>
               </div>
 
               {nodeHistory.length > 1 && (
-                <div className="mt-4 pt-4 border-t border-white/10">
-                  <p className="text-xs text-white/60 mb-2">Storage Trend (Last 20 Updates)</p>
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-[#1e293b]">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">Storage Trend (Last 20 Updates)</p>
                   <Sparkline 
                     data={nodeHistory.map(h => Math.round((h.usedStorage / h.totalStorage) * 100))}
                     color="#3b82f6"
@@ -206,28 +206,28 @@ export default function NodeDetailModal({ node, history, onClose }: NodeDetailMo
 
           {/* Network Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="glass rounded-xl p-4 border border-white/10">
-              <h4 className="text-sm font-semibold text-white/60 mb-3 flex items-center gap-2">
+            <div className="bg-gray-50 dark:bg-[#1e293b] rounded-xl p-4 border border-gray-200 dark:border-[#1e293b]">
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
                 <Wifi className="w-4 h-4" />
                 Network Details
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-white/60">Status</span>
+                  <span className="text-gray-600 dark:text-gray-400">Status</span>
                   <span className={statusConfig.text}>{statusConfig.label}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/60">Last Seen</span>
-                  <span className="text-white">
+                  <span className="text-gray-600 dark:text-gray-400">Last Seen</span>
+                  <span className="text-gray-900 dark:text-white">
                     {node.lastSeen ? new Date(node.lastSeen).toLocaleString() : 'N/A'}
                   </span>
                 </div>
                 {node.latency && (
                   <div className="flex justify-between">
-                    <span className="text-white/60">Latency</span>
+                    <span className="text-gray-600 dark:text-gray-400">Latency</span>
                     <span className={`font-medium ${
-                      node.latency < 50 ? 'text-green-400' :
-                      node.latency < 100 ? 'text-yellow-400' : 'text-red-400'
+                      node.latency < 50 ? 'text-green-600 dark:text-green-400' :
+                      node.latency < 100 ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400'
                     }`}>
                       {node.latency}ms
                     </span>
@@ -236,43 +236,43 @@ export default function NodeDetailModal({ node, history, onClose }: NodeDetailMo
               </div>
             </div>
 
-            <div className="glass rounded-xl p-4 border border-white/10">
-              <h4 className="text-sm font-semibold text-white/60 mb-3 flex items-center gap-2">
+            <div className="bg-gray-50 dark:bg-[#1e293b] rounded-xl p-4 border border-gray-200 dark:border-[#1e293b]">
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
                 <Cpu className="w-4 h-4" />
                 Performance
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-white/60">Uptime</span>
-                  <span className="text-white">{formatUptime(node.uptime)}</span>
+                  <span className="text-gray-600 dark:text-gray-400">Uptime</span>
+                  <span className="text-gray-900 dark:text-white">{formatUptime(node.uptime)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/60">Version</span>
-                  <span className="text-white font-mono">{node.version || 'N/A'}</span>
+                  <span className="text-gray-600 dark:text-gray-400">Version</span>
+                  <span className="text-gray-900 dark:text-white font-mono">{node.version || 'N/A'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/60">Location</span>
-                  <span className="text-white">{node.location || 'Unknown'}</span>
+                  <span className="text-gray-600 dark:text-gray-400">Location</span>
+                  <span className="text-gray-900 dark:text-white">{node.location || 'Unknown'}</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Public Key & Address */}
-          <div className="glass rounded-xl p-4 border border-white/10">
-            <h4 className="text-sm font-semibold text-white/60 mb-3">Technical Details</h4>
+          <div className="bg-gray-50 dark:bg-[#1e293b] rounded-xl p-4 border border-gray-200 dark:border-[#1e293b]">
+            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Technical Details</h4>
             <div className="space-y-3">
               {node.pubkey && (
                 <div>
-                  <p className="text-xs text-white/60 mb-1">Public Key</p>
-                  <p className="text-sm font-mono text-white break-all bg-white/5 p-2 rounded">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Public Key</p>
+                  <p className="text-sm font-mono text-gray-900 dark:text-white break-all bg-gray-100 dark:bg-[#0a0f1a] p-2 rounded">
                     {node.pubkey}
                   </p>
                 </div>
               )}
               <div>
-                <p className="text-xs text-white/60 mb-1">Full Address</p>
-                <p className="text-sm font-mono text-white break-all bg-white/5 p-2 rounded">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Full Address</p>
+                <p className="text-sm font-mono text-gray-900 dark:text-white break-all bg-gray-100 dark:bg-[#0a0f1a] p-2 rounded">
                   {node.address}
                 </p>
               </div>
