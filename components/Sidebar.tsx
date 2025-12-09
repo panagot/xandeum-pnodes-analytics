@@ -22,8 +22,8 @@ export default function Sidebar({ currentTab, onTabChange }: SidebarProps) {
 
   const navItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-    { id: 'nodes', label: 'Nodes', icon: Network },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { id: 'nodes', label: 'Node', icon: Network },
+    { id: 'analytics', label: 'Analytic', icon: BarChart3 },
     { id: 'compare', label: 'Compare', icon: GitCompare },
   ];
 

@@ -16,7 +16,6 @@ import Leaderboard from '@/components/Leaderboard';
 import NodeComparison from '@/components/NodeComparison';
 import NetworkHealth from '@/components/NetworkHealth';
 import ExportButton from '@/components/ExportButton';
-import AdvancedFilters from '@/components/AdvancedFilters';
 import SmartSearch from '@/components/SmartSearch';
 import AIVirtualAnalyst from '@/components/AIVirtualAnalyst';
 import Sidebar from '@/components/Sidebar';
@@ -61,7 +60,7 @@ export default function Home() {
           console.warn('⚠️ API returned empty array - this should not happen with mock data fallback');
           setError('No nodes available. Please check pRPC endpoint configuration.');
         } else {
-          console.log(`✅ Loaded ${data.data.length} nodes`);
+          // Loaded nodes successfully
           
           // Calculate XAND rewards for each node
           const nodesWithRewards = data.data.map((node: PNode) => ({
@@ -136,7 +135,6 @@ export default function Home() {
         onSearch={() => setShowSearch(true)}
         onFilter={() => setShowFilter(true)}
         onDateRangeChange={(range) => {
-          console.log('Date range changed to:', range);
           setDateRange(range);
         }}
         onExport={() => {

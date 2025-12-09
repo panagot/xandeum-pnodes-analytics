@@ -20,7 +20,7 @@ export async function GET() {
       });
     }
     
-    console.log(`✅ API returning ${nodes.length} nodes`);
+    // Returning nodes successfully
     
     return NextResponse.json({
       success: true,
