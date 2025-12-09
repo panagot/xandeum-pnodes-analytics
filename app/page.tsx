@@ -23,11 +23,11 @@ import TopBar from '@/components/TopBar';
 import FilterModal from '@/components/FilterModal';
 import NotificationsPanel from '@/components/NotificationsPanel';
 import SettingsPanel from '@/components/SettingsPanel';
-import { LayoutGrid, List, Activity, AlertCircle, Network, FileText, BarChart3 } from 'lucide-react';
+import { LayoutGrid, List, Activity, AlertCircle, Network, FileText, BarChart3, Bell, AlertTriangle, CheckCircle, X, Plus, Settings as SettingsIcon } from 'lucide-react';
 import { calculateMonthlyXANDRewards } from '@/lib/rewards';
 
 type ViewMode = 'grid' | 'table';
-type TabMode = 'overview' | 'nodes' | 'analytics' | 'compare' | 'performance' | 'network' | 'reports';
+type TabMode = 'overview' | 'nodes' | 'analytics' | 'compare' | 'performance' | 'network' | 'reports' | 'alerts';
 
 export default function Home() {
   const [nodes, setNodes] = useState<PNode[]>([]);
@@ -760,6 +760,240 @@ export default function Home() {
                       Export JSON
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Alerts Tab */}
+          {tabMode === 'alerts' && (
+            <div className="space-y-6">
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Alerts & Monitoring</h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Configure alerts, monitor thresholds, and manage notifications</p>
+                </div>
+                <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                  <Plus className="w-4 h-4" />
+                  Create Alert
+                </button>
+              </div>
+
+              {/* Active Alerts */}
+              <div className="card p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Active Alerts</h3>
+                  <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-sm font-semibold">
+                    {nodes.filter(n => n.status === 'offline' || (n.latency && n.latency > 200)).length} Active
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  {(() => {
+                    const activeAlerts = [
+                      ...nodes.filter(n => n.status === 'offline').slice(0, 3).map(n => ({
+                        id: n.id,
+                        type: 'error',
+                        title: 'Node Offline',
+                        message: `${n.id} has been offline`,
+                        timestamp: new Date(),
+                        node: n,
+                      })),
+                      ...nodes.filter(n => n.latency && n.latency > 200).slice(0, 2).map(n => ({
+                        id: `${n.id}-latency`,
+                        type: 'warning',
+                        title: 'High Latency',
+                        message: `${n.id} latency is ${n.latency}ms (threshold: 200ms)`,
+                        timestamp: new Date(),
+                        node: n,
+                      })),
+                    ];
+
+                    return activeAlerts.length > 0 ? (
+                      activeAlerts.map((alert) => (
+                        <div
+                          key={alert.id}
+                          className={`flex items-start gap-4 p-4 rounded-lg border ${
+                            alert.type === 'error'
+                              ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                              : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
+                          }`}
+                        >
+                          <div className={`p-2 rounded-lg ${
+                            alert.type === 'error'
+                              ? 'bg-red-100 dark:bg-red-900/30'
+                              : 'bg-yellow-100 dark:bg-yellow-900/30'
+                          }`}>
+                            {alert.type === 'error' ? (
+                              <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
+                            ) : (
+                              <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{alert.title}</h4>
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                {alert.timestamp.toLocaleTimeString()}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{alert.message}</p>
+                            <button
+                              onClick={() => setSelectedNode(alert.node)}
+                              className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                              View Node Details →
+                            </button>
+                          </div>
+                          <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-8">
+                        <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
+                        <p className="text-sm text-gray-600 dark:text-gray-400">No active alerts</p>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              {/* Alert Configuration */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="card p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <SettingsIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Alert Thresholds</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Latency Threshold (ms)
+                      </label>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="number"
+                          defaultValue={200}
+                          className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        />
+                        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Uptime Threshold (days)
+                      </label>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="number"
+                          defaultValue={7}
+                          className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        />
+                        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Storage Usage Threshold (%)
+                      </label>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="number"
+                          defaultValue={90}
+                          className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        />
+                        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Bell className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Notification Settings</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">Email Notifications</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Receive alerts via email</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">Browser Notifications</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Show browser notifications</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">Critical Alerts Only</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Only notify for critical issues</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Alert History */}
+              <div className="card p-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Alert History</h3>
+                <div className="space-y-3">
+                  {[
+                    { type: 'error', title: 'Node Offline', message: 'pNode-1234 went offline', time: '2 hours ago', resolved: true },
+                    { type: 'warning', title: 'High Latency', message: 'pNode-5678 latency exceeded 200ms', time: '5 hours ago', resolved: true },
+                    { type: 'error', title: 'Node Offline', message: 'pNode-9012 went offline', time: '1 day ago', resolved: true },
+                    { type: 'warning', title: 'Storage Warning', message: 'pNode-3456 storage at 85%', time: '2 days ago', resolved: true },
+                  ].map((alert, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                    >
+                      <div className={`p-2 rounded-lg ${
+                        alert.type === 'error'
+                          ? 'bg-red-100 dark:bg-red-900/30'
+                          : 'bg-yellow-100 dark:bg-yellow-900/30'
+                      }`}>
+                        {alert.type === 'error' ? (
+                          <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
+                        ) : (
+                          <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">{alert.title}</p>
+                          {alert.resolved && (
+                            <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded text-xs font-semibold">
+                              Resolved
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">{alert.message}</p>
+                      </div>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">{alert.time}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

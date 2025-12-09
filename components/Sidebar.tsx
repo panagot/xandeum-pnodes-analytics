@@ -11,7 +11,8 @@ import {
   ChevronRight,
   Zap,
   Gauge,
-  FileText
+  FileText,
+  Bell
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -30,6 +31,7 @@ export default function Sidebar({ currentTab, onTabChange }: SidebarProps) {
     { id: 'performance', label: 'Performance', icon: Gauge },
     { id: 'network', label: 'Network', icon: Network },
     { id: 'reports', label: 'Reports', icon: FileText },
+    { id: 'alerts', label: 'Alerts', icon: Bell },
   ];
 
   const isActive = (itemId: string) => currentTab === itemId;
