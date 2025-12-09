@@ -46,8 +46,6 @@ export default function TopBar({
     }
   };
 
-  if (!mounted) return null;
-
   return (
     <header className="fixed top-0 left-64 right-0 h-16 bg-white dark:bg-[#131a26] border-b border-gray-200 dark:border-[#1e293b] z-30 shadow-sm">
       <div className="h-full px-6 flex items-center justify-between">
@@ -117,8 +115,9 @@ export default function TopBar({
             onClick={toggleTheme}
             className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
             title="Toggle theme"
+            suppressHydrationWarning
           >
-            {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {mounted ? (darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />) : <Moon className="w-4 h-4" />}
           </button>
 
           {/* User Menu */}
