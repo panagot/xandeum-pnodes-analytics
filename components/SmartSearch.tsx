@@ -101,19 +101,19 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
       onClick={handleBackdropClick}
     >
       <div 
-        className="glass-strong rounded-2xl shadow-2xl border border-white/20 max-w-2xl w-full backdrop-blur-2xl"
+        className="bg-white dark:bg-[#131a26] rounded-2xl shadow-2xl border border-gray-200 dark:border-[#1e293b] max-w-2xl w-full"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-4 border-b border-white/10">
+        <div className="p-4 border-b border-gray-200 dark:border-[#1e293b]">
           <div className="flex items-center gap-3">
-            <Search className="w-5 h-5 text-white/60" />
+            <Search className="w-5 h-5 text-gray-500 dark:text-gray-400" />
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search nodes by ID, address, status, location... (Press / to focus)"
-              className="flex-1 bg-transparent text-white placeholder:text-white/40 outline-none text-lg"
+              className="flex-1 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none text-lg"
             />
             <button
               onClick={(e) => {
@@ -121,7 +121,7 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
                 e.stopPropagation();
                 onClose?.();
               }}
-              className="p-1 text-white/60 hover:text-white transition-colors"
+              className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
               aria-label="Close search"
             >
               <X className="w-5 h-5" />
@@ -135,26 +135,26 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
               <button
                 key={node.id}
                 onClick={() => handleSelect(node)}
-                className={`w-full px-4 py-3 text-left hover:bg-white/5 transition-colors border-b border-white/5 ${
-                  index === selectedIndex ? 'bg-white/10' : ''
+                className={`w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-[#1e293b] transition-colors border-b border-gray-200 dark:border-[#1e293b] ${
+                  index === selectedIndex ? 'bg-blue-50 dark:bg-blue-900/20' : ''
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-semibold text-white">{node.id}</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{node.id}</span>
                       <span className={`px-2 py-0.5 rounded text-xs ${
-                        node.status === 'online' ? 'bg-green-500/20 text-green-400' :
-                        node.status === 'syncing' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/20 text-red-400'
+                        node.status === 'online' ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400' :
+                        node.status === 'syncing' ? 'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400' :
+                        'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400'
                       }`}>
                         {node.status}
                       </span>
                     </div>
-                    <div className="text-sm text-white/60 truncate">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
                       {node.address}
                     </div>
-                    <div className="flex items-center gap-4 mt-2 text-xs text-white/40">
+                    <div className="flex items-center gap-4 mt-2 text-xs text-gray-500 dark:text-gray-500">
                       {node.location && (
                         <span>{node.location}</span>
                       )}
@@ -168,7 +168,7 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
                   </div>
                   <div className="ml-4">
                     {index === selectedIndex && (
-                      <div className="text-xs text-white/40">Press Enter</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Press Enter</div>
                     )}
                   </div>
                 </div>
@@ -179,30 +179,30 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
 
         {query && results.length === 0 && (
           <div className="p-8 text-center">
-            <AlertCircle className="w-12 h-12 text-white/40 mx-auto mb-3" />
-            <p className="text-white/60">No nodes found matching &quot;{query}&quot;</p>
+            <AlertCircle className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-3" />
+            <p className="text-gray-600 dark:text-gray-400">No nodes found matching &quot;{query}&quot;</p>
           </div>
         )}
 
         {!query && (
           <div className="p-6">
             <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="glass rounded-lg p-3 border border-white/10">
+              <div className="bg-gray-50 dark:bg-[#1e293b] rounded-lg p-3 border border-gray-200 dark:border-[#1e293b]">
                 <div className="flex items-center gap-2 mb-2">
-                  <Zap className="w-4 h-4 text-purple-400" />
-                  <span className="text-white/60">Quick Actions</span>
+                  <Zap className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span className="text-gray-700 dark:text-gray-300 font-medium">Quick Actions</span>
                 </div>
-                <div className="text-white/40 space-y-1">
+                <div className="text-gray-600 dark:text-gray-400 space-y-1">
                   <div>Type to search...</div>
                   <div>Press / to focus</div>
                 </div>
               </div>
-              <div className="glass rounded-lg p-3 border border-white/10">
+              <div className="bg-gray-50 dark:bg-[#1e293b] rounded-lg p-3 border border-gray-200 dark:border-[#1e293b]">
                 <div className="flex items-center gap-2 mb-2">
-                  <TrendingUp className="w-4 h-4 text-blue-400" />
-                  <span className="text-white/60">Tips</span>
+                  <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span className="text-gray-700 dark:text-gray-300 font-medium">Tips</span>
                 </div>
-                <div className="text-white/40 space-y-1">
+                <div className="text-gray-600 dark:text-gray-400 space-y-1">
                   <div>Search by ID, status, location</div>
                   <div>Use arrow keys to navigate</div>
                 </div>

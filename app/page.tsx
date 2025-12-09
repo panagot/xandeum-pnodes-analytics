@@ -45,6 +45,7 @@ export default function Home() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [filteredNodes, setFilteredNodes] = useState<PNode[]>([]);
+  const [dateRange, setDateRange] = useState('24h');
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchNodes = async () => {
@@ -162,14 +163,11 @@ export default function Home() {
             link.click();
           }
         }}
-        onDateRangeChange={(range) => {
-          console.log('Date range changed to:', range);
-          // TODO: Implement date range filtering
-        }}
         onNotificationsClick={() => setShowNotifications(true)}
         onSettingsClick={() => setShowSettings(true)}
         lastUpdate={lastUpdate}
         refreshing={refreshing}
+        currentDateRange={dateRange}
       />
 
       {/* Main Content */}

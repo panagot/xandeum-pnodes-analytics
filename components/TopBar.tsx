@@ -8,11 +8,11 @@ import {
   Settings, 
   Moon, 
   Sun,
-  Calendar,
   Download,
   Filter
 } from 'lucide-react';
 import { format } from 'date-fns';
+import DateRangePicker from './DateRangePicker';
 
 interface TopBarProps {
   onRefresh?: () => void;
@@ -24,6 +24,7 @@ interface TopBarProps {
   onSettingsClick?: () => void;
   lastUpdate?: Date | null;
   refreshing?: boolean;
+  currentDateRange?: string;
 }
 
 export default function TopBar({ 
@@ -35,15 +36,25 @@ export default function TopBar({
   onNotificationsClick,
   onSettingsClick,
   lastUpdate, 
-  refreshing = false 
+  refreshing = false,
+  currentDateRange = '24h'
 }: TopBarProps) {
   const [darkMode, setDarkMode] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const isDark = document.documentElement.classList.contains('dark');
+    // Check localStorage first, then system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = savedTheme ? savedTheme === 'dark' : systemPrefersDark;
+    
     setDarkMode(isDark);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -51,8 +62,10 @@ export default function TopBar({
     setDarkMode(newMode);
     if (newMode) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
   };
 
@@ -75,14 +88,10 @@ export default function TopBar({
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
           {/* Date Range Selector */}
-          <button 
-            onClick={() => onDateRangeChange?.('24h')}
-            className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-gray-200 dark:border-gray-700"
-            title="Select date range"
-          >
-            <Calendar className="w-4 h-4" />
-            <span>Last 24h</span>
-          </button>
+          <DateRangePicker 
+            onRangeChange={(range) => onDateRangeChange?.(range)}
+            currentRange={currentDateRange}
+          />
 
           {/* Filter */}
           <button 
