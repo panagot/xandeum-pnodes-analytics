@@ -39,7 +39,7 @@ export default function TopBar({
   refreshing = false,
   currentDateRange = '24h'
 }: TopBarProps) {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -50,6 +50,7 @@ export default function TopBar({
     const isDark = savedTheme ? savedTheme === 'dark' : systemPrefersDark;
     
     setDarkMode(isDark);
+    // Apply theme immediately
     if (isDark) {
       document.documentElement.classList.add('dark');
     } else {
@@ -60,6 +61,8 @@ export default function TopBar({
   const toggleTheme = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
+    
+    // Apply theme change immediately
     if (newMode) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -67,6 +70,9 @@ export default function TopBar({
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
+    
+    // Force a re-render to update all components
+    window.dispatchEvent(new Event('themechange'));
   };
 
   return (
