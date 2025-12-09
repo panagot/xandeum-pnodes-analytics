@@ -18,6 +18,7 @@ interface TopBarProps {
   onRefresh?: () => void;
   onSearch?: () => void;
   onExport?: () => void;
+  onFilter?: () => void;
   onDateRangeChange?: (range: string) => void;
   onNotificationsClick?: () => void;
   onSettingsClick?: () => void;
@@ -29,6 +30,7 @@ export default function TopBar({
   onRefresh, 
   onSearch, 
   onExport,
+  onFilter,
   onDateRangeChange,
   onNotificationsClick,
   onSettingsClick,
@@ -83,7 +85,11 @@ export default function TopBar({
           </button>
 
           {/* Filter */}
-          <button className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-gray-200 dark:border-gray-700">
+          <button 
+            onClick={onFilter}
+            className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-gray-200 dark:border-gray-700"
+            title="Filter nodes"
+          >
             <Filter className="w-4 h-4" />
             <span>Filter</span>
           </button>

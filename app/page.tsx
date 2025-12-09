@@ -21,6 +21,9 @@ import SmartSearch from '@/components/SmartSearch';
 import AIVirtualAnalyst from '@/components/AIVirtualAnalyst';
 import Sidebar from '@/components/Sidebar';
 import TopBar from '@/components/TopBar';
+import FilterModal from '@/components/FilterModal';
+import NotificationsPanel from '@/components/NotificationsPanel';
+import SettingsPanel from '@/components/SettingsPanel';
 import { LayoutGrid, List, Activity, AlertCircle } from 'lucide-react';
 import { calculateMonthlyXANDRewards } from '@/lib/rewards';
 
@@ -38,6 +41,10 @@ export default function Home() {
   const [history, setHistory] = useState<any[]>([]);
   const [comparisonNodes, setComparisonNodes] = useState<PNode[]>([]);
   const [showSearch, setShowSearch] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [filteredNodes, setFilteredNodes] = useState<PNode[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchNodes = async () => {
@@ -62,6 +69,7 @@ export default function Home() {
           }));
           
           setNodes(nodesWithRewards);
+          setFilteredNodes(nodesWithRewards);
           setLastUpdate(new Date());
           // Save to history
           HistoryTracker.saveSnapshot(nodesWithRewards);
@@ -125,6 +133,7 @@ export default function Home() {
       <TopBar 
         onRefresh={fetchNodes} 
         onSearch={() => setShowSearch(true)}
+        onFilter={() => setShowFilter(true)}
         onExport={() => {
           // Trigger export using ExportButton logic
           const exportButton = document.querySelector('[data-export-button]');
@@ -157,12 +166,8 @@ export default function Home() {
           console.log('Date range changed to:', range);
           // TODO: Implement date range filtering
         }}
-        onNotificationsClick={() => {
-          alert('Notifications feature coming soon!');
-        }}
-        onSettingsClick={() => {
-          alert('Settings feature coming soon!');
-        }}
+        onNotificationsClick={() => setShowNotifications(true)}
+        onSettingsClick={() => setShowSettings(true)}
         lastUpdate={lastUpdate}
         refreshing={refreshing}
       />
@@ -318,7 +323,7 @@ export default function Home() {
                       <List className="w-4 h-4" />
                     </button>
                   </div>
-                  <ExportButton nodes={nodes} />
+                  <ExportButton nodes={filteredNodes.length > 0 ? filteredNodes : nodes} />
                 </div>
               </div>
 
@@ -333,7 +338,7 @@ export default function Home() {
                 </div>
               ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {nodes.map((node) => (
+                  {(filteredNodes.length > 0 ? filteredNodes : nodes).map((node) => (
                     <PNodeCard 
                       key={node.id} 
                       node={node} 
@@ -343,7 +348,7 @@ export default function Home() {
                 </div>
               ) : (
                 <PNodeTable 
-                  nodes={nodes}
+                  nodes={filteredNodes.length > 0 ? filteredNodes : nodes}
                   onNodeClick={(node) => setSelectedNode(node)}
                   onAddToComparison={(node) => {
                     if (comparisonNodes.length < 4 && !comparisonNodes.find(n => n.id === node.id)) {
@@ -419,6 +424,24 @@ export default function Home() {
           }} 
           onClose={() => setShowSearch(false)} 
         />
+      )}
+
+      {showFilter && (
+        <FilterModal
+          nodes={nodes}
+          onFilter={(filtered) => {
+            setFilteredNodes(filtered);
+          }}
+          onClose={() => setShowFilter(false)}
+        />
+      )}
+
+      {showNotifications && (
+        <NotificationsPanel onClose={() => setShowNotifications(false)} />
+      )}
+
+      {showSettings && (
+        <SettingsPanel onClose={() => setShowSettings(false)} />
       )}
 
       {selectedNode && (
