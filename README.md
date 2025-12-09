@@ -7,12 +7,30 @@
 
 A modern, web-based analytics platform for Xandeum Provider Nodes (pNodes), providing real-time insights into the Xandeum storage network.
 
-## What’s new in the redesign (Dec 2025)
-- 🌐 **Enterprise layout**: New sidebar/topbar shell with dense, readable cards and tables (no more “React default” look).
-- 🎨 **Accessible visuals**: Calmer palette, consistent typography, and card-based sections for analytics, comparisons, and AI insights.
-- 📊 **Readable analytics**: Activity Timeline, Heatmap, Flow Diagram, Leaderboard, and AI Analyst all restyled for clarity with on-card text.
-- 🔄 **Compare UX**: Multi-select compare flow with clear status pills and metric values.
-- 🧭 **Geographic distribution**: Count/Storage/Latency tabs now fully legible with modern cards.
+## Latest Features (Dec 2025)
+
+### Core Tabs & Navigation
+- 📊 **8 Comprehensive Tabs**: Overview, Nodes, Analytics, Compare, Performance, Network, Reports, and Alerts
+- 🎨 **Professional UI**: Enterprise-grade sidebar/topbar layout with accessible design
+- 🌓 **Theme Toggle**: Light/dark mode with persistent preferences
+- 🔍 **Smart Search**: Global search with keyboard shortcut (/) and real-time filtering
+
+### Analytics & Monitoring
+- 📈 **Performance Tab**: Leaderboard with sorting by Health, Uptime, Storage, and Latency
+- 🌐 **Network Tab**: Geographic heatmap with Count/Storage/Latency views, network topology, and statistics
+- 📋 **Reports Tab**: Generate Network Summary, Performance, and Network Health reports (JSON export)
+- 🔔 **Alerts Tab**: Active alerts monitoring, threshold configuration, and notification settings
+
+### Advanced Features
+- 💰 **XAND Rewards Estimation**: Calculate estimated monthly rewards based on storage, uptime, and latency
+- 🗺️ **Real IP-to-Location Mapping**: Geographic distribution using IP-API.com
+- ⏱️ **Consensus Metrics**: Last vote/block timestamps and blocks behind tracking
+- 📊 **Network Health Score**: Overall network health indicator (0-100)
+- 📤 **Export Functionality**: CSV and JSON export options for all node data
+- 🔄 **Date Range Selection**: Filter data by time periods (1h, 24h, 7d, 30d, 90d, All time)
+- 🎯 **Advanced Filtering**: Multi-criteria filters (status, uptime, latency, storage, location)
+- 🔔 **Notifications Panel**: Alert management with read/unread status
+- ⚙️ **Settings Panel**: Appearance, data refresh, and export management
 
 ## Features
 
@@ -32,13 +50,14 @@ A modern, web-based analytics platform for Xandeum Provider Nodes (pNodes), prov
 - 📉 **Sparklines**: Quick trend visualization in all stat cards
 
 ### User Experience
-- 🎨 **Modern UI**: Professional, enterprise-grade card layout with sidebar/topbar navigation and accessible contrast
-- 🔎 **Advanced Search & Filter**: Multi-criteria filtering (status, uptime, latency, storage, location)
+- 🎨 **Modern UI**: Professional, enterprise-grade card layout with sidebar/topbar navigation
+- 🔎 **Advanced Search & Filter**: Multi-criteria filtering with real-time results
 - 📈 **Multiple View Modes**: Grid, Table, and Analytics views
-- 🎯 **Detailed Node Modal**: Comprehensive node information with trends
-- 💾 **Export Functionality**: Export data to CSV or JSON
+- 🎯 **Detailed Node Modal**: Comprehensive node information with historical trends
+- 💾 **Export Functionality**: Export data to CSV or JSON with multiple report types
 - 📊 **Network Health Score**: Overall network health indicator (0-100)
-- 🎛️ **Three Main Tabs**: Nodes, Analytics, and Compare
+- 🎛️ **8 Comprehensive Tabs**: Overview, Nodes, Analytics, Compare, Performance, Network, Reports, Alerts
+- 🌓 **Theme Support**: Light/dark mode with system preference detection
 
 ## Tech Stack
 
@@ -88,24 +107,7 @@ pnpm dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import the project in [Vercel](https://vercel.com)
-3. Vercel will automatically detect Next.js and configure the build settings
-4. Deploy!
-
-### Other Platforms
-
-The platform can be deployed to any platform that supports Next.js:
-
-- **Netlify**: Use the Next.js build preset
-- **Railway**: Add a `railway.json` with build and start commands
-- **Docker**: Use the included Dockerfile (if provided)
-
-### Build for Production
+## Build for Production
 
 ```bash
 npm run build
@@ -235,12 +237,15 @@ This project is open source and available for the Xandeum challenge submission.
 
 This platform was developed for the Xandeum Labs pNode Analytics Challenge. It demonstrates:
 
-- ✅ Successful pRPC integration for retrieving pNode data
-- ✅ Clear, intuitive user interface
-- ✅ Comprehensive feature set beyond basic requirements
-- ✅ Production-ready code with proper error handling
-- ✅ Responsive design for all devices
-- ✅ Real-time updates and auto-refresh
+- ✅ **Successful pRPC Integration**: Real-time pNode data retrieval from Xandeum network gossip
+- ✅ **Professional UI/UX**: Enterprise-grade interface with 8 comprehensive tabs and intuitive navigation
+- ✅ **Advanced Features**: XAND rewards estimation, consensus metrics, geographic mapping, network health monitoring
+- ✅ **Comprehensive Analytics**: Performance leaderboards, network topology, reports generation, and alerts system
+- ✅ **Production-Ready**: Proper error handling, responsive design, theme support, and export functionality
+- ✅ **Real-time Updates**: Auto-refresh every 30 seconds with historical data tracking
 
-For questions or support, please reach out via the Xandeum Discord community.
+**Live Demo**: [xandeum-pnodes-analytics.vercel.app](https://xandeum-pnodes-analytics.vercel.app)  
+**GitHub**: [github.com/panagot/xandeum-pnodes-analytics](https://github.com/panagot/xandeum-pnodes-analytics)
+
+For questions or support, please reach out via the [Xandeum Discord](https://discord.gg/uqRSmmM5m) community.
 
