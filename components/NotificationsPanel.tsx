@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Bell, X, AlertCircle, CheckCircle, Info, AlertTriangle } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -18,7 +19,7 @@ interface NotificationsPanelProps {
 
 export default function NotificationsPanel({ onClose }: NotificationsPanelProps) {
   // Mock notifications - in real app, these would come from state/props
-  const notifications: Notification[] = [
+  const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: '1',
       type: 'warning',
@@ -51,7 +52,17 @@ export default function NotificationsPanel({ onClose }: NotificationsPanelProps)
       timestamp: new Date(Date.now() - 60 * 60000),
       read: false,
     },
-  ];
+  ]);
+
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
+
+  const handleClose = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClose();
+  };
 
   const getIcon = (type: Notification['type']) => {
     switch (type) {
@@ -70,7 +81,7 @@ export default function NotificationsPanel({ onClose }: NotificationsPanelProps)
 
   return (
     <div className="fixed inset-0 z-40 flex items-start justify-end pt-16 pr-4">
-      <div className="bg-black/50 backdrop-blur-sm fixed inset-0" onClick={onClose} />
+      <div className="bg-black/50 backdrop-blur-sm fixed inset-0" onClick={handleClose} />
       <div 
         className="relative bg-white dark:bg-[#131a26] rounded-lg shadow-xl border border-gray-200 dark:border-[#1e293b] w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col z-50"
         onClick={(e) => e.stopPropagation()}
@@ -87,8 +98,9 @@ export default function NotificationsPanel({ onClose }: NotificationsPanelProps)
             )}
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+            type="button"
           >
             <X className="w-5 h-5" />
           </button>
@@ -138,7 +150,11 @@ export default function NotificationsPanel({ onClose }: NotificationsPanelProps)
         {/* Footer */}
         {notifications.length > 0 && (
           <div className="p-3 border-t border-gray-200 dark:border-[#1e293b]">
-            <button className="w-full text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+            <button 
+              onClick={markAllAsRead}
+              className="w-full text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors"
+              type="button"
+            >
               Mark all as read
             </button>
           </div>

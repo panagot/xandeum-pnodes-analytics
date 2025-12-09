@@ -70,11 +70,13 @@ export default function TopBar({
     return () => window.removeEventListener('themechange', handleThemeChange);
   }, []);
 
-  const toggleTheme = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
+  const toggleTheme = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     
-    // Apply theme change immediately
+    const newMode = !darkMode;
+    
+    // Apply theme change immediately to DOM
     if (newMode) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -83,7 +85,10 @@ export default function TopBar({
       localStorage.setItem('theme', 'light');
     }
     
-    // Force a re-render to update all components
+    // Update state to trigger re-render
+    setDarkMode(newMode);
+    
+    // Dispatch event for other components
     window.dispatchEvent(new Event('themechange'));
   };
 
