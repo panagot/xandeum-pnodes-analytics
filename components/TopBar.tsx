@@ -17,6 +17,10 @@ import { format } from 'date-fns';
 interface TopBarProps {
   onRefresh?: () => void;
   onSearch?: () => void;
+  onExport?: () => void;
+  onDateRangeChange?: (range: string) => void;
+  onNotificationsClick?: () => void;
+  onSettingsClick?: () => void;
   lastUpdate?: Date | null;
   refreshing?: boolean;
 }
@@ -24,6 +28,10 @@ interface TopBarProps {
 export default function TopBar({ 
   onRefresh, 
   onSearch, 
+  onExport,
+  onDateRangeChange,
+  onNotificationsClick,
+  onSettingsClick,
   lastUpdate, 
   refreshing = false 
 }: TopBarProps) {
@@ -47,7 +55,7 @@ export default function TopBar({
   };
 
   return (
-    <header className="fixed top-0 left-64 right-0 h-16 bg-white dark:bg-[#131a26] border-b border-gray-200 dark:border-[#1e293b] z-30 shadow-sm">
+    <header className="fixed top-0 left-64 right-0 h-16 bg-white dark:bg-[#131a26] border-b border-gray-200 dark:border-[#1e293b] z-50 shadow-sm">
       <div className="h-full px-6 flex items-center justify-between">
         {/* Left: Page Title & Breadcrumbs */}
         <div className="flex items-center gap-4">
@@ -65,7 +73,11 @@ export default function TopBar({
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
           {/* Date Range Selector */}
-          <button className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-gray-200 dark:border-gray-700">
+          <button 
+            onClick={() => onDateRangeChange?.('24h')}
+            className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-gray-200 dark:border-gray-700"
+            title="Select date range"
+          >
             <Calendar className="w-4 h-4" />
             <span>Last 24h</span>
           </button>
@@ -99,13 +111,21 @@ export default function TopBar({
           </button>
 
           {/* Export */}
-          <button className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-gray-200 dark:border-gray-700">
+          <button 
+            onClick={onExport}
+            className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-gray-200 dark:border-gray-700"
+            title="Export data"
+          >
             <Download className="w-4 h-4" />
             <span>Export</span>
           </button>
 
           {/* Notifications */}
-          <button className="relative p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+          <button 
+            onClick={onNotificationsClick}
+            className="relative p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            title="Notifications"
+          >
             <Bell className="w-4 h-4" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-[#131a26]"></span>
           </button>
@@ -121,7 +141,11 @@ export default function TopBar({
           </button>
 
           {/* User Menu */}
-          <button className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+          <button 
+            onClick={onSettingsClick}
+            className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            title="Settings"
+          >
             <Settings className="w-4 h-4" />
           </button>
         </div>

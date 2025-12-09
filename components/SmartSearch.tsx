@@ -97,7 +97,7 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-40 flex items-start justify-center pt-20 px-4 bg-black/50 backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
       <div 

@@ -121,10 +121,48 @@ export default function Home() {
       {/* Sidebar */}
       <Sidebar currentTab={tabMode} onTabChange={(tab) => setTabMode(tab as TabMode)} />
       
-      {/* Top Bar */}
+      {/* Top Bar - Must be above modals */}
       <TopBar 
         onRefresh={fetchNodes} 
         onSearch={() => setShowSearch(true)}
+        onExport={() => {
+          // Trigger export using ExportButton logic
+          const exportButton = document.querySelector('[data-export-button]');
+          if (exportButton) {
+            (exportButton as HTMLElement).click();
+          } else {
+            // Fallback: create temporary export
+            const headers = ['ID', 'Address', 'Status', 'Version', 'Uptime (days)', 'Storage Capacity (GB)', 'Storage Used (GB)', 'Storage %', 'Latency (ms)', 'Location'];
+            const rows = nodes.map(node => [
+              node.id,
+              node.address,
+              node.status || 'unknown',
+              node.version || 'N/A',
+              node.uptime ? (node.uptime / 86400).toFixed(2) : 'N/A',
+              node.storageCapacity ? (node.storageCapacity / 1000000).toFixed(2) : 'N/A',
+              node.storageUsed ? (node.storageUsed / 1000000).toFixed(2) : 'N/A',
+              node.storageCapacity ? ((node.storageUsed || 0) / node.storageCapacity * 100).toFixed(2) : 'N/A',
+              node.latency || 'N/A',
+              node.location || 'Unknown',
+            ]);
+            const csvContent = [headers.join(','), ...rows.map(row => row.map(cell => `"${cell}"`).join(','))].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `xandeum-pnodes-${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+          }
+        }}
+        onDateRangeChange={(range) => {
+          console.log('Date range changed to:', range);
+          // TODO: Implement date range filtering
+        }}
+        onNotificationsClick={() => {
+          alert('Notifications feature coming soon!');
+        }}
+        onSettingsClick={() => {
+          alert('Settings feature coming soon!');
+        }}
         lastUpdate={lastUpdate}
         refreshing={refreshing}
       />
