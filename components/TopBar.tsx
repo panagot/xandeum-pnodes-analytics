@@ -58,6 +58,18 @@ export default function TopBar({
     }
   }, []);
 
+  // Listen for theme changes from other components
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const savedTheme = localStorage.getItem('theme');
+      const isDark = savedTheme === 'dark';
+      setDarkMode(isDark);
+    };
+
+    window.addEventListener('themechange', handleThemeChange);
+    return () => window.removeEventListener('themechange', handleThemeChange);
+  }, []);
+
   const toggleTheme = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
