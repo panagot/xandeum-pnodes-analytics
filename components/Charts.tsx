@@ -115,7 +115,6 @@ export function NodeCountChart({ history }: { history: HistoricalDataPoint[] }) 
               borderRadius: '8px',
               color: '#111827'
             }}
-            className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
           />
           <Legend />
           <Line 
@@ -196,7 +195,6 @@ export function StorageChart({ history }: { history: HistoricalDataPoint[] }) {
               borderRadius: '8px',
               color: '#111827'
             }}
-            className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
           />
           <Legend />
           <Bar dataKey="used" stackId="a" fill={COLORS.purple} name="Used Storage" />
@@ -243,7 +241,6 @@ export function StorageUsageChart({ currentStats }: { currentStats: ChartsProps[
               borderRadius: '8px',
               color: '#111827'
             }}
-            className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
           />
         </PieChart>
       </ResponsiveContainer>
