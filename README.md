@@ -1,7 +1,6 @@
 # Xandeum pNodes Analytics → The dashboard operators actually want
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-8b5cf6?style=for-the-badge&logo=vercel)](https://your-xandeum-dashboard.vercel.app)
-[![Video Walkthrough](https://img.shields.io/badge/Watch_Video-ff0000?style=for-the-badge&logo=youtube)](https://loom.com/your-video)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-8b5cf6?style=for-the-badge&logo=vercel)](https://xandeum-pnodes-analytics.vercel.app)
 
 **Real-time pRPC • Geographic map • Network health • Built for Xandeum Bounty – Dec 2025**
 
