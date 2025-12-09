@@ -12,7 +12,9 @@ import {
   Zap,
   Gauge,
   FileText,
-  Bell
+  Bell,
+  Globe,
+  Github
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -101,7 +103,29 @@ export default function Sidebar({ currentTab, onTabChange }: SidebarProps) {
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-[#1e293b]">
           <div className="text-xs text-gray-500 dark:text-gray-400">
             <p className="font-medium text-gray-700 dark:text-gray-300">v1.0.0</p>
-            <p className="mt-1">Xandeum Labs</p>
+            <p className="mt-1 mb-2">Xandeum Labs</p>
+            <div className="flex items-center gap-3 mt-2">
+              <a
+                href="https://www.xandeum.network/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                title="Visit Xandeum Network"
+                aria-label="Visit Xandeum Network"
+              >
+                <Globe className="w-4 h-4" />
+              </a>
+              <a
+                href="https://github.com/panagot/xandeum-pnodes-analytics"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                title="View on GitHub"
+                aria-label="View on GitHub"
+              >
+                <Github className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
       )}

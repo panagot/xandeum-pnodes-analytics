@@ -46,6 +46,7 @@ export default function Home() {
   const [filteredNodes, setFilteredNodes] = useState<PNode[]>([]);
   const [dateRange, setDateRange] = useState('24h');
   const [refreshing, setRefreshing] = useState(false);
+  const [dismissedAlerts, setDismissedAlerts] = useState<Set<string>>(new Set());
 
   const fetchNodes = async () => {
     setRefreshing(true);
@@ -123,6 +124,164 @@ export default function Home() {
   };
 
   const onlinePercentage = stats.total > 0 ? (stats.online / stats.total) * 100 : 0;
+
+  // Report generation functions
+  const generateNetworkSummaryReport = () => {
+    const reportData = {
+      reportType: 'Network Summary',
+      generatedAt: new Date().toISOString(),
+      summary: {
+        totalNodes: nodes.length,
+        onlineNodes: nodes.filter(n => n.status === 'online').length,
+        offlineNodes: nodes.filter(n => n.status === 'offline').length,
+        syncingNodes: nodes.filter(n => n.status === 'syncing').length,
+        totalStorageCapacity: nodes.reduce((sum, n) => sum + (n.storageCapacity || 0), 0),
+        totalStorageUsed: nodes.reduce((sum, n) => sum + (n.storageUsed || 0), 0),
+        averageLatency: nodes.reduce((sum, n) => sum + (n.latency || 0), 0) / nodes.length,
+        averageUptime: nodes.reduce((sum, n) => sum + (n.uptime || 0), 0) / nodes.length,
+      },
+      nodes: nodes.map(node => ({
+        id: node.id,
+        address: node.address,
+        status: node.status,
+        storageCapacity: node.storageCapacity,
+        storageUsed: node.storageUsed,
+        latency: node.latency,
+        uptime: node.uptime,
+        location: node.location,
+      })),
+    };
+
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `network-summary-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+  };
+
+  const generatePerformanceReport = () => {
+    const avgLatency = nodes.reduce((sum, n) => sum + (n.latency || 0), 0) / nodes.length;
+    const avgUptime = nodes.reduce((sum, n) => sum + (n.uptime || 0), 0) / nodes.length;
+    const avgStorageUsage = nodes.reduce((sum, n) => {
+      if (n.storageCapacity) {
+        return sum + ((n.storageUsed || 0) / n.storageCapacity * 100);
+      }
+      return sum;
+    }, 0) / nodes.length;
+
+    const reportData = {
+      reportType: 'Performance Report',
+      generatedAt: new Date().toISOString(),
+      metrics: {
+        averageLatency: avgLatency,
+        averageUptime: avgUptime,
+        averageStorageUsage: avgStorageUsage,
+        topPerformers: nodes
+          .sort((a, b) => {
+            const scoreA = ((a.uptime || 0) / 86400) * 0.4 + (1 / (a.latency || 1)) * 0.3 + ((a.storageUsed || 0) / (a.storageCapacity || 1)) * 0.3;
+            const scoreB = ((b.uptime || 0) / 86400) * 0.4 + (1 / (b.latency || 1)) * 0.3 + ((b.storageUsed || 0) / (b.storageCapacity || 1)) * 0.3;
+            return scoreB - scoreA;
+          })
+          .slice(0, 10)
+          .map(n => ({
+            id: n.id,
+            uptime: n.uptime,
+            latency: n.latency,
+            storageUsage: n.storageCapacity ? ((n.storageUsed || 0) / n.storageCapacity * 100) : 0,
+          })),
+      },
+    };
+
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `performance-report-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+  };
+
+  const generateNetworkHealthReport = () => {
+    const onlineCount = nodes.filter(n => n.status === 'online').length;
+    const healthScore = (onlineCount / nodes.length) * 100;
+    
+    const reportData = {
+      reportType: 'Network Health Report',
+      generatedAt: new Date().toISOString(),
+      healthScore: healthScore,
+      status: healthScore >= 80 ? 'Excellent' : healthScore >= 60 ? 'Good' : healthScore >= 40 ? 'Fair' : 'Poor',
+      infrastructure: {
+        totalNodes: nodes.length,
+        onlineNodes: onlineCount,
+        offlineNodes: nodes.filter(n => n.status === 'offline').length,
+        syncingNodes: nodes.filter(n => n.status === 'syncing').length,
+        totalCapacity: nodes.reduce((sum, n) => sum + (n.storageCapacity || 0), 0),
+        totalUsed: nodes.reduce((sum, n) => sum + (n.storageUsed || 0), 0),
+      },
+      issues: [
+        ...nodes.filter(n => n.status === 'offline').map(n => ({ type: 'offline', nodeId: n.id })),
+        ...nodes.filter(n => n.latency && n.latency > 200).map(n => ({ type: 'high_latency', nodeId: n.id, latency: n.latency })),
+      ],
+    };
+
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `network-health-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+  };
+
+  // Export functions for Export Options section
+  const handleExportCSV = () => {
+    const headers = ['ID', 'Address', 'Status', 'Version', 'Uptime (days)', 'Storage Capacity (GB)', 'Storage Used (GB)', 'Storage %', 'Latency (ms)', 'Location'];
+    const rows = nodes.map(node => [
+      node.id,
+      node.address,
+      node.status || 'unknown',
+      node.version || 'N/A',
+      node.uptime ? (node.uptime / 86400).toFixed(2) : 'N/A',
+      node.storageCapacity ? (node.storageCapacity / 1000000).toFixed(2) : 'N/A',
+      node.storageUsed ? (node.storageUsed / 1000000).toFixed(2) : 'N/A',
+      node.storageCapacity ? ((node.storageUsed || 0) / node.storageCapacity * 100).toFixed(2) : 'N/A',
+      node.latency || 'N/A',
+      node.location || 'Unknown',
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `xandeum-pnodes-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  };
+
+  const handleExportJSON = () => {
+    const jsonData = {
+      exportDate: new Date().toISOString(),
+      totalNodes: nodes.length,
+      nodes: nodes.map(node => ({
+        id: node.id,
+        address: node.address,
+        pubkey: node.pubkey,
+        status: node.status,
+        version: node.version,
+        uptime: node.uptime,
+        storageCapacity: node.storageCapacity,
+        storageUsed: node.storageUsed,
+        latency: node.latency,
+        location: node.location,
+        lastSeen: node.lastSeen,
+      })),
+    };
+
+    const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `xandeum-pnodes-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0a0f1a]">
@@ -680,7 +839,10 @@ export default function Home() {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Network Summary</h3>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Complete network overview with all key metrics</p>
-                  <button className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                  <button 
+                    onClick={generateNetworkSummaryReport}
+                    className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
                     Generate Report
                   </button>
                 </div>
@@ -693,7 +855,10 @@ export default function Home() {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Performance Report</h3>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Performance metrics, benchmarks, and trends</p>
-                  <button className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors">
+                  <button 
+                    onClick={generatePerformanceReport}
+                    className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
                     Generate Report
                   </button>
                 </div>
@@ -706,7 +871,10 @@ export default function Home() {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Network Health</h3>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Network health score and infrastructure status</p>
-                  <button className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors">
+                  <button 
+                    onClick={generateNetworkHealthReport}
+                    className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
                     Generate Report
                   </button>
                 </div>
@@ -749,14 +917,20 @@ export default function Home() {
                   <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                     <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">CSV Export</h4>
                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">Export node data as CSV for spreadsheet analysis</p>
-                    <button className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors">
+                    <button 
+                      onClick={handleExportCSV}
+                      className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors"
+                    >
                       Export CSV
                     </button>
                   </div>
                   <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                     <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">JSON Export</h4>
                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">Export node data as JSON for programmatic access</p>
-                    <button className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors">
+                    <button 
+                      onClick={handleExportJSON}
+                      className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors"
+                    >
                       Export JSON
                     </button>
                   </div>
@@ -784,7 +958,13 @@ export default function Home() {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Active Alerts</h3>
                   <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-sm font-semibold">
-                    {nodes.filter(n => n.status === 'offline' || (n.latency && n.latency > 200)).length} Active
+                    {(() => {
+                      const activeAlerts = [
+                        ...nodes.filter(n => n.status === 'offline').slice(0, 3).map(n => n.id),
+                        ...nodes.filter(n => n.latency && n.latency > 200).slice(0, 2).map(n => `${n.id}-latency`),
+                      ];
+                      return activeAlerts.filter(id => !dismissedAlerts.has(id)).length;
+                    })()} Active
                   </span>
                 </div>
                 <div className="space-y-3">
@@ -808,8 +988,10 @@ export default function Home() {
                       })),
                     ];
 
-                    return activeAlerts.length > 0 ? (
-                      activeAlerts.map((alert) => (
+                    const filteredAlerts = activeAlerts.filter(alert => !dismissedAlerts.has(alert.id));
+                    
+                    return filteredAlerts.length > 0 ? (
+                      filteredAlerts.map((alert) => (
                         <div
                           key={alert.id}
                           className={`flex items-start gap-4 p-4 rounded-lg border ${
@@ -844,7 +1026,16 @@ export default function Home() {
                               View Node Details →
                             </button>
                           </div>
-                          <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                          <button 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setDismissedAlerts(prev => new Set([...prev, alert.id]));
+                            }}
+                            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            type="button"
+                            aria-label="Dismiss alert"
+                          >
                             <X className="w-4 h-4" />
                           </button>
                         </div>
