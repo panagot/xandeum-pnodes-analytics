@@ -70,23 +70,38 @@ export default function TopBar({
     return () => window.removeEventListener('themechange', handleThemeChange);
   }, []);
 
-  const toggleTheme = (e: React.MouseEvent) => {
+  const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     
     const newMode = !darkMode;
     
     // Apply theme change immediately to DOM
+    const htmlElement = document.documentElement;
     if (newMode) {
-      document.documentElement.classList.add('dark');
+      htmlElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      htmlElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
     
     // Update state to trigger re-render
     setDarkMode(newMode);
+    
+    // Force a small delay to ensure DOM update
+    requestAnimationFrame(() => {
+      // Verify the class was applied
+      const isDarkApplied = htmlElement.classList.contains('dark');
+      if (isDarkApplied !== newMode) {
+        // Re-apply if needed
+        if (newMode) {
+          htmlElement.classList.add('dark');
+        } else {
+          htmlElement.classList.remove('dark');
+        }
+      }
+    });
     
     // Dispatch event for other components
     window.dispatchEvent(new Event('themechange'));
@@ -171,9 +186,11 @@ export default function TopBar({
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            type="button"
+            className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer"
             title="Toggle theme"
             suppressHydrationWarning
+            aria-label="Toggle dark mode"
           >
             {mounted ? (darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />) : <Moon className="w-4 h-4" />}
           </button>
