@@ -41,9 +41,9 @@ export default function NodeComparison({
 
   if (selectedNodes.length === 0) {
     return (
-      <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
-        <h3 className="text-lg font-display font-bold text-white mb-4">Compare Nodes</h3>
-        <p className="text-white/60 text-center mb-6">
+      <div className="card p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Compare Nodes</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-6">
           Select up to 4 nodes to compare their metrics side-by-side
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-96 overflow-y-auto">
@@ -52,26 +52,26 @@ export default function NodeComparison({
               key={node.id}
               onClick={() => onNodeSelect(node)}
               disabled={selectedNodes.length >= 4}
-              className="px-4 py-3 glass rounded-lg border border-white/10 hover:border-purple-500/50 text-sm text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed text-left"
+              className="px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-gray-100 hover:border-blue-400 dark:hover:border-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-left shadow-sm"
             >
               <div className="flex items-center justify-between mb-1">
                 <span className="font-medium truncate">{node.id}</span>
-                <span className={`px-2 py-0.5 rounded text-xs ${
-                  node.status === 'online' ? 'bg-green-500/20 text-green-400' :
-                  node.status === 'syncing' ? 'bg-yellow-500/20 text-yellow-400' :
-                  'bg-red-500/20 text-red-400'
+                <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                  node.status === 'online' ? 'bg-green-100 text-green-700' :
+                  node.status === 'syncing' ? 'bg-yellow-100 text-yellow-700' :
+                  'bg-red-100 text-red-700'
                 }`}>
                   {node.status}
                 </span>
               </div>
-              <div className="text-xs text-white/60">
+              <div className="text-xs text-gray-600 dark:text-gray-400">
                 {node.location || 'Unknown'}
               </div>
             </button>
           ))}
         </div>
         {selectedNodes.length >= 4 && (
-          <p className="text-yellow-400 text-sm text-center mt-4">
+          <p className="text-sm text-yellow-700 dark:text-yellow-400 text-center mt-4">
             Maximum of 4 nodes can be compared at once
           </p>
         )}
@@ -80,17 +80,17 @@ export default function NodeComparison({
   }
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
+    <div className="card p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-display font-bold text-white">Node Comparison</h3>
-          <p className="text-sm text-white/60 mt-1">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Node Comparison</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
             {selectedNodes.length} of 4 nodes selected
           </p>
         </div>
         <div className="flex items-center gap-3">
           {selectedNodes.length < 4 && (
-            <div className="glass rounded-lg p-2 border border-white/10">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-2">
               <select
                 onChange={(e) => {
                   const node = nodes.find(n => n.id === e.target.value);
@@ -99,14 +99,14 @@ export default function NodeComparison({
                   }
                   e.target.value = '';
                 }}
-                className="bg-transparent text-white text-sm border-none outline-none cursor-pointer"
+                className="bg-transparent text-gray-900 dark:text-gray-100 text-sm border-none outline-none cursor-pointer"
                 defaultValue=""
               >
                 <option value="" disabled>Add node...</option>
                 {nodes
                   .filter(n => !selectedNodes.find(sn => sn.id === n.id))
                   .map(node => (
-                    <option key={node.id} value={node.id} className="bg-slate-900">
+                    <option key={node.id} value={node.id} className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                       {node.id}
                     </option>
                   ))}
@@ -115,7 +115,7 @@ export default function NodeComparison({
           )}
           <button
             onClick={onClear}
-            className="text-white/60 hover:text-white transition-colors px-3 py-2 glass rounded-lg border border-white/10 hover:border-white/20"
+            className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500"
           >
             Clear All
           </button>
@@ -125,15 +125,15 @@ export default function NodeComparison({
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-white/10">
-              <th className="px-4 py-3 text-left text-xs font-semibold text-white/60">Metric</th>
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400">Metric</th>
               {selectedNodes.map(node => (
-                <th key={node.id} className="px-4 py-3 text-left text-xs font-semibold text-white">
+                <th key={node.id} className="px-4 py-3 text-left text-xs font-semibold text-gray-900 dark:text-white">
                   <div className="flex items-center gap-2">
                     <span className="truncate max-w-[120px]">{node.id}</span>
                     <button
                       onClick={() => onNodeRemove(node.id)}
-                      className="text-white/40 hover:text-white"
+                      className="text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-white"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -142,15 +142,15 @@ export default function NodeComparison({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/10">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             <tr>
-              <td className="px-4 py-3 text-sm text-white/60">Status</td>
+              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">Status</td>
               {selectedNodes.map(node => (
                 <td key={node.id} className="px-4 py-3">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    node.status === 'online' ? 'bg-green-500/20 text-green-400' :
-                    node.status === 'syncing' ? 'bg-yellow-500/20 text-yellow-400' :
-                    'bg-red-500/20 text-red-400'
+                  <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                    node.status === 'online' ? 'bg-green-100 text-green-700' :
+                    node.status === 'syncing' ? 'bg-yellow-100 text-yellow-700' :
+                    'bg-red-100 text-red-700'
                   }`}>
                     {node.status}
                   </span>
@@ -158,7 +158,7 @@ export default function NodeComparison({
               ))}
             </tr>
             <tr>
-              <td className="px-4 py-3 text-sm text-white/60">Uptime</td>
+              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">Uptime</td>
               {compareMetric('uptime', (val) => {
                 if (!val) return 'N/A';
                 const days = Math.floor(val / 86400);
@@ -166,70 +166,70 @@ export default function NodeComparison({
               }).map(({ node, value, isBest, isWorst }) => (
                 <td key={node.id} className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-white">{value}</span>
-                    {isBest && <TrendingUp className="w-4 h-4 text-green-400" />}
-                    {isWorst && <TrendingDown className="w-4 h-4 text-red-400" />}
+                    <span className="text-gray-900 dark:text-white">{value}</span>
+                    {isBest && <TrendingUp className="w-4 h-4 text-green-600" />}
+                    {isWorst && <TrendingDown className="w-4 h-4 text-red-500" />}
                   </div>
                 </td>
               ))}
             </tr>
             <tr>
-              <td className="px-4 py-3 text-sm text-white/60">Storage Capacity</td>
+              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">Storage Capacity</td>
               {compareMetric('storageCapacity', (val) => {
                 if (!val) return 'N/A';
                 return `${(val / 1000000).toFixed(1)} GB`;
               }).map(({ node, value, isBest, isWorst }) => (
                 <td key={node.id} className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-white">{value}</span>
-                    {isBest && <TrendingUp className="w-4 h-4 text-green-400" />}
-                    {isWorst && <TrendingDown className="w-4 h-4 text-red-400" />}
+                    <span className="text-gray-900 dark:text-white">{value}</span>
+                    {isBest && <TrendingUp className="w-4 h-4 text-green-600" />}
+                    {isWorst && <TrendingDown className="w-4 h-4 text-red-500" />}
                   </div>
                 </td>
               ))}
             </tr>
             <tr>
-              <td className="px-4 py-3 text-sm text-white/60">Storage Used</td>
+              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">Storage Used</td>
               {compareMetric('storageUsed', (val) => {
                 if (!val) return 'N/A';
                 return `${(val / 1000000).toFixed(1)} GB`;
               }).map(({ node, value, isBest, isWorst }) => (
                 <td key={node.id} className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-white">{value}</span>
-                    {isBest && <TrendingUp className="w-4 h-4 text-green-400" />}
-                    {isWorst && <TrendingDown className="w-4 h-4 text-red-400" />}
+                    <span className="text-gray-900 dark:text-white">{value}</span>
+                    {isBest && <TrendingUp className="w-4 h-4 text-green-600" />}
+                    {isWorst && <TrendingDown className="w-4 h-4 text-red-500" />}
                   </div>
                 </td>
               ))}
             </tr>
             <tr>
-              <td className="px-4 py-3 text-sm text-white/60">Latency</td>
+              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">Latency</td>
               {compareMetric('latency', (val) => {
                 if (!val) return 'N/A';
                 return `${val}ms`;
               }).map(({ node, value, isBest, isWorst }) => (
                 <td key={node.id} className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-white">{value}</span>
-                    {isBest && <TrendingUp className="w-4 h-4 text-green-400" />}
-                    {isWorst && <TrendingDown className="w-4 h-4 text-red-400" />}
+                    <span className="text-gray-900 dark:text-white">{value}</span>
+                    {isBest && <TrendingUp className="w-4 h-4 text-green-600" />}
+                    {isWorst && <TrendingDown className="w-4 h-4 text-red-500" />}
                   </div>
                 </td>
               ))}
             </tr>
             <tr>
-              <td className="px-4 py-3 text-sm text-white/60">Version</td>
+              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">Version</td>
               {selectedNodes.map(node => (
-                <td key={node.id} className="px-4 py-3 text-white font-mono">
+                <td key={node.id} className="px-4 py-3 text-gray-900 dark:text-white font-mono">
                   {node.version || 'N/A'}
                 </td>
               ))}
             </tr>
             <tr>
-              <td className="px-4 py-3 text-sm text-white/60">Location</td>
+              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">Location</td>
               {selectedNodes.map(node => (
-                <td key={node.id} className="px-4 py-3 text-white">
+                <td key={node.id} className="px-4 py-3 text-gray-900 dark:text-white">
                   {node.location || 'Unknown'}
                 </td>
               ))}

@@ -30,12 +30,12 @@ interface ChartsProps {
 }
 
 const COLORS = {
-  online: '#10b981',
-  offline: '#ef4444',
+  online: '#22c55e',
+  offline: '#f43f5e',
   syncing: '#f59e0b',
-  primary: '#8b5cf6',
-  purple: '#a78bfa',
-  pink: '#ec4899',
+  primary: '#2563eb',
+  purple: '#7c3aed',
+  pink: '#06b6d4',
 };
 
 export function StatusChart({ currentStats }: { currentStats: ChartsProps['currentStats'] }) {
@@ -46,10 +46,7 @@ export function StatusChart({ currentStats }: { currentStats: ChartsProps['curre
   ].filter(item => item.value > 0);
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
-      <h3 className="text-lg font-display font-bold text-white mb-4">
-        Node Status Distribution
-      </h3>
+    <div>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie
@@ -87,11 +84,8 @@ export function NodeCountChart({ history }: { history: HistoricalDataPoint[] }) 
 
   if (chartData.length === 0) {
     return (
-      <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
-        <h3 className="text-lg font-display font-bold text-white mb-4">
-          Node Count Over Time
-        </h3>
-        <p className="text-white/60 text-center py-8">
+      <div>
+        <p className="text-gray-500 dark:text-gray-400 text-center py-8 text-sm">
           No historical data yet. Data will appear after a few updates.
         </p>
       </div>
@@ -99,29 +93,29 @@ export function NodeCountChart({ history }: { history: HistoricalDataPoint[] }) 
   }
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
-      <h3 className="text-lg font-display font-bold text-white mb-4">
-        Node Count Over Time
-      </h3>
+    <div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.1)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-700" />
           <XAxis 
             dataKey="time" 
-            stroke="rgba(255, 255, 255, 0.4)"
+            stroke="#6b7280"
+            className="dark:stroke-gray-400"
             style={{ fontSize: '12px' }}
           />
           <YAxis 
-            stroke="rgba(255, 255, 255, 0.4)"
+            stroke="#6b7280"
+            className="dark:stroke-gray-400"
             style={{ fontSize: '12px' }}
           />
           <Tooltip 
             contentStyle={{ 
-              backgroundColor: 'rgba(15, 15, 15, 0.95)', 
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '12px',
-              color: '#fff'
+              backgroundColor: '#fff',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              color: '#111827'
             }}
+            className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
           />
           <Legend />
           <Line 
@@ -171,11 +165,8 @@ export function StorageChart({ history }: { history: HistoricalDataPoint[] }) {
 
   if (chartData.length === 0) {
     return (
-      <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
-        <h3 className="text-lg font-display font-bold text-white mb-4">
-          Storage Usage Over Time
-        </h3>
-        <p className="text-white/60 text-center py-8">
+      <div>
+        <p className="text-gray-500 dark:text-gray-400 text-center py-8 text-sm">
           No historical data yet. Data will appear after a few updates.
         </p>
       </div>
@@ -183,33 +174,33 @@ export function StorageChart({ history }: { history: HistoricalDataPoint[] }) {
   }
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
-      <h3 className="text-lg font-display font-bold text-white mb-4">
-        Storage Usage Over Time (GB)
-      </h3>
+    <div>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.1)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-700" />
           <XAxis 
             dataKey="time" 
-            stroke="rgba(255, 255, 255, 0.4)"
+            stroke="#6b7280"
+            className="dark:stroke-gray-400"
             style={{ fontSize: '12px' }}
           />
           <YAxis 
-            stroke="rgba(255, 255, 255, 0.4)"
+            stroke="#6b7280"
+            className="dark:stroke-gray-400"
             style={{ fontSize: '12px' }}
           />
           <Tooltip 
             contentStyle={{ 
-              backgroundColor: 'rgba(15, 15, 15, 0.95)', 
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '12px',
-              color: '#fff'
+              backgroundColor: '#fff',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              color: '#111827'
             }}
+            className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
           />
           <Legend />
-          <Bar dataKey="used" stackId="a" fill="#ef4444" name="Used Storage" />
-          <Bar dataKey="available" stackId="a" fill="#10b981" name="Available Storage" />
+          <Bar dataKey="used" stackId="a" fill={COLORS.purple} name="Used Storage" />
+          <Bar dataKey="available" stackId="a" fill={COLORS.pink} name="Available Storage" />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -223,15 +214,12 @@ export function StorageUsageChart({ currentStats }: { currentStats: ChartsProps[
   const availablePercent = 100 - usedPercent;
 
   const data = [
-    { name: 'Used', value: usedPercent, color: '#ef4444' },
-    { name: 'Available', value: availablePercent, color: '#10b981' },
+    { name: 'Used', value: usedPercent, color: COLORS.purple },
+    { name: 'Available', value: availablePercent, color: COLORS.pink },
   ];
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
-      <h3 className="text-lg font-display font-bold text-white mb-4">
-        Total Storage Distribution
-      </h3>
+    <div>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie
@@ -248,10 +236,18 @@ export function StorageUsageChart({ currentStats }: { currentStats: ChartsProps[
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
-          <Tooltip />
+          <Tooltip 
+            contentStyle={{ 
+              backgroundColor: '#fff',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              color: '#111827'
+            }}
+            className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+          />
         </PieChart>
       </ResponsiveContainer>
-      <div className="mt-4 text-center text-sm text-white/60">
+      <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
         <p>
           Used: {(currentStats.usedStorage / 1000000).toFixed(2)} GB / {' '}
           {(currentStats.totalStorage / 1000000).toFixed(2)} GB

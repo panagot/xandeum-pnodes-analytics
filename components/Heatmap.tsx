@@ -66,21 +66,21 @@ export default function Heatmap({ nodes, onNodeClick }: HeatmapProps) {
   };
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
+    <div className="card p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <MapPin className="w-5 h-5 text-purple-400" />
-          <h3 className="text-lg font-display font-bold text-white">Geographic Distribution</h3>
+          <MapPin className="w-5 h-5 text-blue-600" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Geographic Distribution</h3>
         </div>
-        <div className="flex gap-2 glass rounded-lg p-1 border border-white/10">
+        <div className="flex gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
           {(['count', 'storage', 'latency'] as const).map((metric) => (
             <button
               key={metric}
               onClick={() => setSelectedMetric(metric)}
-              className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
+              className={`px-3 py-1.5 rounded text-xs font-semibold transition-all ${
                 selectedMetric === metric
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               {metric.charAt(0).toUpperCase() + metric.slice(1)}
@@ -97,32 +97,30 @@ export default function Heatmap({ nodes, onNodeClick }: HeatmapProps) {
           return (
             <div
               key={location}
-              className={`glass rounded-xl p-4 border border-white/10 hover:border-white/20 transition-all cursor-pointer group relative overflow-hidden`}
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer relative overflow-hidden"
               onClick={() => onNodeClick?.(locationNodes[0])}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-10 transition-opacity`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-5 pointer-events-none`} />
               
               <div className="relative">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <div className={`p-2 bg-gradient-to-br ${color} rounded-lg opacity-80`}>
-                      <MapPin className="w-4 h-4 text-white" />
+                    <div className={`p-2 bg-gradient-to-br ${color} rounded-lg text-white`}>
+                      <MapPin className="w-4 h-4" />
                     </div>
-                    <span className="text-sm font-semibold text-white">{location}</span>
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{location}</span>
                   </div>
-                  <div className={`w-3 h-3 rounded-full bg-gradient-to-br ${color}`}>
-                    <div className={`w-full h-full rounded-full bg-gradient-to-br ${color} animate-pulse opacity-75`} />
-                  </div>
+                  <div className={`w-3 h-3 rounded-full bg-gradient-to-br ${color}`} />
                 </div>
 
                 <div className="space-y-2">
                   <div>
-                    <p className="text-xs text-white/60 mb-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                       {selectedMetric === 'count' && 'Nodes'}
                       {selectedMetric === 'storage' && 'Storage (GB)'}
                       {selectedMetric === 'latency' && 'Avg Latency (ms)'}
                     </p>
-                    <p className="text-2xl font-bold text-white">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
                       {selectedMetric === 'latency' 
                         ? value.toFixed(0)
                         : selectedMetric === 'storage'
@@ -131,19 +129,19 @@ export default function Heatmap({ nodes, onNodeClick }: HeatmapProps) {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs">
+                  <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
                     <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 rounded-full bg-green-400" />
-                      <span className="text-white/60">{online} online</span>
+                      <div className="w-2 h-2 rounded-full bg-green-500" />
+                      <span>{online} online</span>
                     </div>
-                    <span className="text-white/40">•</span>
-                    <span className="text-white/60">{total} total</span>
+                    <span className="text-gray-400">•</span>
+                    <span>{total} total</span>
                   </div>
 
-                  <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mt-2">
+                  <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mt-2">
                     <div
-                      className={`h-full bg-gradient-to-r ${color} rounded-full transition-all`}
-                      style={{ width: `${(value / maxValue) * 100}%` }}
+                      className="h-full rounded-full transition-all"
+                      style={{ width: `${(value / maxValue) * 100}%`, backgroundImage: `linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to))` }}
                     />
                   </div>
                 </div>
@@ -153,7 +151,7 @@ export default function Heatmap({ nodes, onNodeClick }: HeatmapProps) {
         })}
       </div>
 
-      <div className="mt-6 flex items-center justify-center gap-4 text-xs text-white/60">
+      <div className="mt-6 flex items-center justify-center gap-4 text-xs text-gray-600 dark:text-gray-400">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-gradient-to-br from-slate-500 to-slate-600" />
           <span>Low</span>

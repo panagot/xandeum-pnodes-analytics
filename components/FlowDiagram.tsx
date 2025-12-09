@@ -123,10 +123,10 @@ export default function FlowDiagram({ nodes, onNodeClick }: FlowDiagramProps) {
   const offlineLayout = layoutNodes(offlineNodes, 420);
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl overflow-hidden">
+    <div className="card p-6 overflow-hidden">
       <div className="flex items-center gap-2 mb-6">
-        <Network className="w-5 h-5 text-purple-400" />
-        <h3 className="text-lg font-display font-bold text-white">Network Topology</h3>
+        <Network className="w-5 h-5 text-blue-600" />
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Network Topology</h3>
       </div>
       
       <div className="relative" style={{ height: '500px' }}>
@@ -154,14 +154,14 @@ export default function FlowDiagram({ nodes, onNodeClick }: FlowDiagramProps) {
 
           {/* Legend */}
           <g>
-            <rect x="20" y="20" width="12" height="12" fill="#10b981" rx="2" />
-            <text x="40" y="31" fill="white" fontSize="12">Online</text>
+            <rect x="20" y="20" width="12" height="12" fill="#16a34a" rx="2" />
+            <text x="40" y="31" fill="#111827" fontSize="12">Online</text>
             
             <rect x="20" y="40" width="12" height="12" fill="#f59e0b" rx="2" />
-            <text x="40" y="51" fill="white" fontSize="12">Syncing</text>
+            <text x="40" y="51" fill="#111827" fontSize="12">Syncing</text>
             
-            <rect x="20" y="60" width="12" height="12" fill="#ef4444" rx="2" />
-            <text x="40" y="71" fill="white" fontSize="12">Offline</text>
+            <rect x="20" y="60" width="12" height="12" fill="#f43f5e" rx="2" />
+            <text x="40" y="71" fill="#111827" fontSize="12">Offline</text>
           </g>
 
           {/* Online Nodes */}
@@ -181,13 +181,13 @@ export default function FlowDiagram({ nodes, onNodeClick }: FlowDiagramProps) {
         </svg>
       </div>
 
-      <div className="mt-4 flex items-center justify-between text-xs text-white/60">
+      <div className="mt-4 flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
         <div className="flex items-center gap-4">
           <span>Online: {onlineNodes.length}</span>
           <span>Syncing: {syncingNodes.length}</span>
           <span>Offline: {offlineNodes.length}</span>
         </div>
-        <span className="text-white/40">Click nodes to view details</span>
+        <span className="text-gray-400 dark:text-gray-500">Click nodes to view details</span>
       </div>
     </div>
   );

@@ -11,12 +11,12 @@ interface ActivityTimelineProps {
 export default function ActivityTimeline({ history }: ActivityTimelineProps) {
   if (history.length === 0) {
     return (
-      <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
-        <h3 className="text-lg font-display font-bold text-white mb-4 flex items-center gap-2">
-          <Activity className="w-5 h-5 text-purple-400" />
+      <div className="card p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <Activity className="w-5 h-5 text-blue-600" />
           Activity Timeline
         </h3>
-        <p className="text-white/60 text-center py-8">No activity data yet</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 text-center py-8">No activity data yet</p>
       </div>
     );
   }
@@ -41,9 +41,9 @@ export default function ActivityTimeline({ history }: ActivityTimelineProps) {
   };
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
-      <h3 className="text-lg font-display font-bold text-white mb-6 flex items-center gap-2">
-        <Activity className="w-5 h-5 text-purple-400" />
+    <div className="card p-6">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+        <Activity className="w-5 h-5 text-blue-600" />
         Activity Timeline
       </h3>
 
@@ -57,31 +57,31 @@ export default function ActivityTimeline({ history }: ActivityTimelineProps) {
 
             <div className="flex items-start gap-4">
               {/* Icon */}
-              <div className="relative z-10 p-2 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-500/30">
-                <Activity className="w-4 h-4 text-purple-400" />
+              <div className="relative z-10 p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-800">
+                <Activity className="w-4 h-4 text-blue-600 dark:text-blue-300" />
               </div>
 
               {/* Content */}
-              <div className="flex-1 glass rounded-xl p-4 border border-white/10">
+              <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs text-white/60">
+                  <span className="text-xs text-gray-600 dark:text-gray-400">
                     {formatDistanceToNow(activity.timestamp, { addSuffix: true })}
                   </span>
-                  <span className="text-xs text-white/40">
+                  <span className="text-xs text-gray-400 dark:text-gray-500">
                     {activity.timestamp.toLocaleTimeString()}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <div>
-                    <p className="text-xs text-white/60 mb-1">Total Nodes</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Total Nodes</p>
                     <div className="flex items-center gap-2">
-                      <p className="text-lg font-bold text-white">{activity.totalNodes}</p>
+                      <p className="text-lg font-bold text-gray-900 dark:text-white">{activity.totalNodes}</p>
                       {activity.nodeChange !== 0 && (
                         <div className="flex items-center gap-1">
                           {getChangeIcon(activity.nodeChange)}
                           <span className={`text-xs font-medium ${
-                            activity.nodeChange > 0 ? 'text-green-400' : 'text-red-400'
+                            activity.nodeChange > 0 ? 'text-green-600 dark:text-green-300' : 'text-red-500 dark:text-red-300'
                           }`}>
                             {Math.abs(activity.nodeChange)}
                           </span>
@@ -91,14 +91,14 @@ export default function ActivityTimeline({ history }: ActivityTimelineProps) {
                   </div>
 
                   <div>
-                    <p className="text-xs text-white/60 mb-1">Online</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Online</p>
                     <div className="flex items-center gap-2">
-                      <p className="text-lg font-bold text-green-400">{activity.onlineNodes}</p>
+                      <p className="text-lg font-bold text-green-600 dark:text-green-300">{activity.onlineNodes}</p>
                       {activity.onlineChange !== 0 && (
                         <div className="flex items-center gap-1">
                           {getChangeIcon(activity.onlineChange)}
                           <span className={`text-xs font-medium ${
-                            activity.onlineChange > 0 ? 'text-green-400' : 'text-red-400'
+                            activity.onlineChange > 0 ? 'text-green-600 dark:text-green-300' : 'text-red-500 dark:text-red-300'
                           }`}>
                             {Math.abs(activity.onlineChange)}
                           </span>
@@ -108,13 +108,13 @@ export default function ActivityTimeline({ history }: ActivityTimelineProps) {
                   </div>
 
                   <div>
-                    <p className="text-xs text-white/60 mb-1">Syncing</p>
-                    <p className="text-lg font-bold text-yellow-400">{activity.syncingNodes}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Syncing</p>
+                    <p className="text-lg font-bold text-yellow-600 dark:text-yellow-300">{activity.syncingNodes}</p>
                   </div>
 
                   <div>
-                    <p className="text-xs text-white/60 mb-1">Storage</p>
-                    <p className="text-lg font-bold text-white">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Storage</p>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">
                       {(activity.totalStorage / 1000000).toFixed(1)} GB
                     </p>
                   </div>

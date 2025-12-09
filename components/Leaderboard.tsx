@@ -81,21 +81,21 @@ export default function Leaderboard({ nodes, onNodeClick }: LeaderboardProps) {
   };
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
+    <div className="card p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-yellow-400" />
-          <h3 className="text-lg font-display font-bold text-white">Top Performers</h3>
+          <Trophy className="w-5 h-5 text-yellow-500" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Top Performers</h3>
         </div>
-        <div className="flex gap-2 glass rounded-lg p-1 border border-white/10">
+        <div className="flex gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
           {(['health', 'uptime', 'storage', 'latency'] as SortMetric[]).map((metric) => (
             <button
               key={metric}
               onClick={() => setSortMetric(metric)}
-              className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
+              className={`px-3 py-1.5 rounded text-xs font-semibold transition-all ${
                 sortMetric === metric
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               {metric.charAt(0).toUpperCase() + metric.slice(1)}
@@ -109,8 +109,8 @@ export default function Leaderboard({ nodes, onNodeClick }: LeaderboardProps) {
           <div
             key={node.id}
             onClick={() => onNodeClick?.(node)}
-            className={`glass rounded-xl p-4 border border-white/10 hover:border-white/20 transition-all cursor-pointer group ${
-              index < 3 ? 'bg-gradient-to-r from-purple-500/10 to-pink-500/10' : ''
+            className={`rounded-xl p-4 border transition-all cursor-pointer group bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm ${
+              index < 3 ? 'bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20' : ''
             }`}
           >
             <div className="flex items-center gap-4">
@@ -120,22 +120,22 @@ export default function Leaderboard({ nodes, onNodeClick }: LeaderboardProps) {
               
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-sm font-semibold text-white truncate">{node.id}</h4>
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white truncate">{node.id}</h4>
                   <div className="flex items-center gap-2">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      node.status === 'online' ? 'bg-green-500/20 text-green-400' :
-                      node.status === 'syncing' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-red-500/20 text-red-400'
+                    <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                      node.status === 'online' ? 'bg-green-100 text-green-700' :
+                      node.status === 'syncing' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-red-100 text-red-700'
                     }`}>
                       {node.status}
                     </span>
-                    <span className="text-sm font-bold text-white">
+                    <span className="text-sm font-bold text-gray-900 dark:text-white">
                       {formatValue(node, sortMetric)}
                     </span>
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-4 text-xs text-white/60">
+                <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
                   {node.uptime && (
                     <div className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />

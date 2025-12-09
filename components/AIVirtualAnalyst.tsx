@@ -57,18 +57,18 @@ export default function AIVirtualAnalyst({ nodes, history }: AIVirtualAnalystPro
   ];
 
   return (
-    <div className="glass-strong rounded-2xl p-6 border border-white/10 backdrop-blur-2xl">
+    <div className="card p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Sparkles className="w-5 h-5 text-purple-400" />
-            <div className="absolute inset-0 bg-purple-400/20 rounded-full blur-md animate-pulse" />
+            <Sparkles className="w-5 h-5 text-blue-600" />
+            <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-md animate-pulse" />
           </div>
-          <h3 className="text-lg font-display font-bold text-white">AI Virtual Analyst</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">AI Virtual Analyst</h3>
         </div>
         <button
           onClick={() => setExpanded(!expanded)}
-          className="text-white/60 hover:text-white transition-colors text-sm"
+          className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           {expanded ? 'Collapse' : 'Expand'}
         </button>
@@ -78,32 +78,32 @@ export default function AIVirtualAnalyst({ nodes, history }: AIVirtualAnalystPro
         {insights.slice(0, expanded ? insights.length : 1).map((insight, index) => {
           const Icon = insight.icon;
           const colorClasses: Record<InsightType, string> = {
-            success: 'from-green-500/20 to-emerald-500/20 border-green-500/30',
-            warning: 'from-yellow-500/20 to-amber-500/20 border-yellow-500/30',
-            info: 'from-blue-500/20 to-cyan-500/20 border-blue-500/30',
+            success: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+            warning: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
+            info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800',
           };
 
           return (
             <div
               key={index}
-              className={`glass rounded-xl p-4 border bg-gradient-to-r ${colorClasses[insight.type]} transition-all hover:scale-[1.02] cursor-pointer`}
+              className={`rounded-xl p-4 border transition-all hover:scale-[1.01] cursor-pointer shadow-sm ${colorClasses[insight.type]}`}
             >
               <div className="flex items-start gap-3">
                 <div className={`p-2 rounded-lg ${
-                  insight.type === 'success' ? 'bg-green-500/20' :
-                  insight.type === 'warning' ? 'bg-yellow-500/20' :
-                  'bg-blue-500/20'
+                  insight.type === 'success' ? 'bg-green-100 dark:bg-green-800/40' :
+                  insight.type === 'warning' ? 'bg-yellow-100 dark:bg-yellow-800/40' :
+                  'bg-blue-100 dark:bg-blue-800/40'
                 }`}>
                   <Icon className={`w-4 h-4 ${
-                    insight.type === 'success' ? 'text-green-400' :
-                    insight.type === 'warning' ? 'text-yellow-400' :
-                    'text-blue-400'
+                    insight.type === 'success' ? 'text-green-600 dark:text-green-300' :
+                    insight.type === 'warning' ? 'text-yellow-600 dark:text-yellow-300' :
+                    'text-blue-600 dark:text-blue-300'
                   }`} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-semibold text-white mb-1">{insight.title}</h4>
-                  <p className="text-xs text-white/70 mb-2">{insight.message}</p>
-                  <button className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1">
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">{insight.title}</h4>
+                  <p className="text-xs text-gray-700 dark:text-gray-300 mb-2">{insight.message}</p>
+                  <button className="text-xs text-blue-600 dark:text-blue-300 hover:underline flex items-center gap-1">
                     <Zap className="w-3 h-3" />
                     {insight.action}
                   </button>
@@ -117,7 +117,7 @@ export default function AIVirtualAnalyst({ nodes, history }: AIVirtualAnalystPro
       {!expanded && insights.length > 1 && (
         <button
           onClick={() => setExpanded(true)}
-          className="mt-3 text-sm text-white/60 hover:text-white transition-colors w-full text-center"
+          className="mt-3 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors w-full text-center"
         >
           + {insights.length - 1} more insights
         </button>
