@@ -94,6 +94,8 @@ export default function Home() {
   // Keyboard shortcut for search
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't open search if already open or if typing in input
+      if (showSearch) return;
       if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
         e.preventDefault();
         setShowSearch(true);
@@ -101,7 +103,7 @@ export default function Home() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [showSearch]);
 
   const stats = {
     total: nodes.length,

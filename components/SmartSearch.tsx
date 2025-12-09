@@ -50,18 +50,28 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't handle if user is typing in an input
+      if ((e.target as HTMLElement)?.tagName === 'INPUT') {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          onClose?.();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          setSelectedIndex(prev => Math.min(prev + 1, results.length - 1));
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          setSelectedIndex(prev => Math.max(prev - 1, 0));
+        } else if (e.key === 'Enter' && results[selectedIndex]) {
+          e.preventDefault();
+          onSelect(results[selectedIndex]);
+          setQuery('');
+        }
+        return;
+      }
+
       if (e.key === 'Escape') {
+        e.preventDefault();
         onClose?.();
-      } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setSelectedIndex(prev => Math.min(prev + 1, results.length - 1));
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setSelectedIndex(prev => Math.max(prev - 1, 0));
-      } else if (e.key === 'Enter' && results[selectedIndex]) {
-        e.preventDefault();
-        onSelect(results[selectedIndex]);
-        setQuery('');
       }
     };
 
@@ -76,11 +86,24 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
   const handleSelect = (node: PNode) => {
     onSelect(node);
     setQuery('');
+    onClose?.();
+  };
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose?.();
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
-      <div className="glass-strong rounded-2xl shadow-2xl border border-white/20 max-w-2xl w-full backdrop-blur-2xl">
+    <div 
+      className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/50 backdrop-blur-sm"
+      onClick={handleBackdropClick}
+    >
+      <div 
+        className="glass-strong rounded-2xl shadow-2xl border border-white/20 max-w-2xl w-full backdrop-blur-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center gap-3">
             <Search className="w-5 h-5 text-white/60" />
@@ -93,8 +116,13 @@ export default function SmartSearch({ nodes, onSelect, onClose }: SmartSearchPro
               className="flex-1 bg-transparent text-white placeholder:text-white/40 outline-none text-lg"
             />
             <button
-              onClick={onClose}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onClose?.();
+              }}
               className="p-1 text-white/60 hover:text-white transition-colors"
+              aria-label="Close search"
             >
               <X className="w-5 h-5" />
             </button>
