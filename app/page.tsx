@@ -35,7 +35,7 @@ export default function Home() {
   const [tabMode, setTabMode] = useState<TabMode>('overview');
   const [selectedNode, setSelectedNode] = useState<PNode | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
-  const [history, setHistory] = useState(HistoryTracker.getHistory());
+  const [history, setHistory] = useState<any[]>([]);
   const [comparisonNodes, setComparisonNodes] = useState<PNode[]>([]);
   const [showSearch, setShowSearch] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -81,6 +81,8 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // Load history on client side only
+    setHistory(HistoryTracker.getHistory());
     fetchNodes();
     
     // Auto-refresh every 30 seconds
